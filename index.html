@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" ondragstart="return false">
+<head>
+	<meta charset="UTF-8">
+	<title>3D相册版</title>
+	<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html,
+			body{
+				background: #000;
+				overflow: hidden;
+			}
+			img{
+			font-size:40px;
+			color:cyan;
+			}
+		/* 	舞台视角 */
+			#fu{
+				perspective:800px;
+
+			}
+			#zi,
+			#zi>img{
+				position: absolute;
+				height: 200px;
+				width: 120px;
+			}
+			/* 图片阴影 */
+			#zi>img{
+				-webkit-box-reflect: below 0 -webkit-gradient(linear,
+					                   left top,
+					                   left bottom,
+					                   from(transparent),
+					                   color-stop(1%,transparent),
+					                   to(rgba(255,255,255,.6)));
+			}
+			#zi{
+				position: relative;
+				margin: 200px auto;
+				transform: rotate3d(1, 0, 0, -20deg);
+				transform-style: preserve-3d;
+			}
+	</style>
+	<script type="text/javascript">
+		window.onload=function(){
+			alert('图片阴影仅仅在谷歌浏览器生效');
+			var zi=document.getElementById('zi');//子id
+			var oImg=zi.getElementsByTagName('img');//获取img
+			var len=oImg.length;//img个数
+			var deg=360/len;//每个img的旋转角度
+
+			//图片入场动画以及旋转
+			Array.prototype.forEach.call(oImg,function(ele,index,ts){
+					ele.style.transform="rotateY("+deg*index+"deg) translateZ(300px)";//img旋转
+					ele.style.transition = '1s '+(len-index)*.1+'s ease-in-out';
+			});
+				var newX,newY,lastX,lastY,minX,minY,rotX=-20,rotY=0;
+				document.onmousedown=function(e){
+					lastX=e.clientX;
+					lastY=e.clientY;
+					this.onmousemove=function(e){
+						newX=e.clientX;
+						newY=e.clientY;
+						minX=newX-lastX;
+						minY=newY-lastY;
+
+						rotX-=minX*0.02;
+						rotY+=minY*0.02;
+						zi.style.transform="rotateX("+rotY+"deg) rotateY("+rotX+"deg)";
+						newX=lastX;
+						newY=lastY;
+						this.onmouseup=function(e){
+							this.onmouseover=null;
+							};
+						};
+					};
+
+			};//onload结束
+
+	</script>
+</head>
+<body>
+	<div id="fu">
+		<div id="zi">
+			<img src="imgs/p1.jpg" alt="图片不能存在">
+			<img src="imgs/p2.jpg" alt="图片不能存在">
+			<img src="imgs/p3.jpg" alt="图片不能存在">
+			<img src="imgs/p4.jpg" alt="图片不能存在">
+			<img src="imgs/p5.jpg" alt="图片不能存在">
+			<img src="imgs/p6.jpg" alt="图片不能存在">
+			<img src="imgs/p7.jpg" alt="图片不能存在">
+		</div>
+	</div>
+</body>
+</html>
